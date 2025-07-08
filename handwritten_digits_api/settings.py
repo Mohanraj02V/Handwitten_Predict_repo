@@ -120,18 +120,27 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # Explicit path
 
 # Database configuration with defaults
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': env('DB_NAME'),
+#         'USER': env('DB_USER'),
+#         'PASSWORD': env('DB_PASSWORD'),
+#         'HOST': env('DB_HOST'),  # e.g., "dpg-xxxxxx-a.oregon-postgres.render.com"
+#         'PORT': env('DB_PORT'),  # Usually 5432
+#         'OPTIONS': {
+#             'sslmode': 'require',  # Force SSL
+#         },
+#     }
+# }
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),  # e.g., "dpg-xxxxxx-a.oregon-postgres.render.com"
-        'PORT': env('DB_PORT'),  # Usually 5432
-        'OPTIONS': {
-            'sslmode': 'require',  # Force SSL
-        },
-    }
+    'default': dj_database_url.config(
+        default=env('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 SECRET_KEY = env('SECRET_KEY')
