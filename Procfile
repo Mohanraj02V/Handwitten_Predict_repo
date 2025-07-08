@@ -1,0 +1,1 @@
+web: gunicorn handwritten_digits_api.wsgi
