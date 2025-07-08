@@ -126,8 +126,11 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
-        'PORT': env('DB_PORT'),
+        'HOST': env('DB_HOST'),  # e.g., "dpg-xxxxxx-a.oregon-postgres.render.com"
+        'PORT': env('DB_PORT'),  # Usually 5432
+        'OPTIONS': {
+            'sslmode': 'require',  # Force SSL
+        },
     }
 }
 
