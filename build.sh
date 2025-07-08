@@ -12,8 +12,10 @@ pip install -r requirements.txt
 echo "Applying database migrations..."
 python manage.py migrate
 
-# Collect static files
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
+# Only collect static files if not disabled
+if [ "$DISABLE_COLLECTSTATIC" != "1" ]; then
+    echo "Collecting static files..."
+    python manage.py collectstatic --noinput
+fi
 
 echo "Build completed successfully!"

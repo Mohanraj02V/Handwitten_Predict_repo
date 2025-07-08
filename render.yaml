@@ -15,6 +15,8 @@ services:
         value: "False"
       - key: PYTHON_VERSION
         value: "3.9.16"
+      - key: DISABLE_COLLECTSTATIC
+        value: "1"  # Add this if you're not using static files
     plan: free
     numInstances: 1
 
