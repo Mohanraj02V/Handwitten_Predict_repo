@@ -114,10 +114,9 @@ DATABASES = {
         os.environ.get("DATABASE_URL") + "?sslmode=require", 
         conn_max_age=600,
         conn_health_checks=True,
-        ssl_require=True
     )
 }
-
+#ssl_require=True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
