@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#n9%9@(7j)jy8+1k^v&2&j^x*dg-y=g8)rjxmals%q8b5-k57i'
+#SECRET_KEY = 'django-insecure-#n9%9@(7j)jy8+1k^v&2&j^x*dg-y=g8)rjxmals%q8b5-k57i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
@@ -107,22 +107,15 @@ WSGI_APPLICATION = 'handwritten_digits_api.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+#import dj_database_url
 
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
 
 
 # Password validation
