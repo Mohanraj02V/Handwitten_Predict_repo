@@ -109,6 +109,7 @@ WSGI_APPLICATION = 'handwritten_digits_api.wsgi.application'
 import environ
 import os
 from pathlib import Path
+# import dotenv
 
 # Initialize environ
 env = environ.Env()
@@ -118,32 +119,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read .env file (add this after BASE_DIR)
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # Explicit path
-
-# Database configuration with defaults
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': env('DB_NAME'),
-#         'USER': env('DB_USER'),
-#         'PASSWORD': env('DB_PASSWORD'),
-#         'HOST': env('DB_HOST'),  # e.g., "dpg-xxxxxx-a.oregon-postgres.render.com"
-#         'PORT': env('DB_PORT'),  # Usually 5432
-#         'OPTIONS': {
-#             'sslmode': 'require',  # Force SSL
-#         },
-#     }
-# }
 '''
 import dj_database_url
 
+# First try to get DATABASE_URL from environment
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+# Fallback to .env file if needed
+if not DATABASE_URL:
+    from dotenv import load_dotenv
+    load_dotenv()
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=env('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
+    'default': dj_database_url.parse(DATABASE_URL)
 }
 '''
+
 import dj_database_url
 import os
 
