@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-#n9%9@(7j)jy8+1k^v&2&j^x*dg-y=g8)rjxmals%q8b5-k57i
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-
-ALLOWED_HOSTS = ['*']
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-t-2p3-&rzpvty*g&$plq5j9oos7+6t_iq7f^xv8tyfn7p*$m41')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 
 # Application definition
@@ -106,56 +107,22 @@ WSGI_APPLICATION = 'handwritten_digits_api.wsgi.application'
 #     }
 # }
 
-import environ
-import os
-from pathlib import Path
-# import dotenv
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-# Initialize environ
-env = environ.Env()
-
-# Build paths inside the project
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Read .env file (add this after BASE_DIR)
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))  # Explicit path
-'''
-import dj_database_url
-
-# First try to get DATABASE_URL from environment
-DATABASE_URL = os.environ.get('DATABASE_URL')
-
-# Fallback to .env file if needed
-if not DATABASE_URL:
-    from dotenv import load_dotenv
-    load_dotenv()
-    DATABASE_URL = os.environ.get('DATABASE_URL')
-
-DATABASES = {
-    'default': dj_database_url.parse(DATABASE_URL)
-}
-'''
-
-import dj_database_url
-import os
-
-# Database configuration with SSL enforcement
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True  # Explicitly enforce SSL
-    )
-}
-
-# Additional SSL context configuration
-DATABASES['default']['OPTIONS'] = {
-    'sslmode': 'require',
-    'sslrootcert': os.path.join(BASE_DIR, 'render-pg.crt')  # Only if needed
-}
-SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG', default=False)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -216,3 +183,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+CORS_ALLOW_ALL_ORIGINS = True  # Temporary for debugging
+CSRF_TRUSTED_ORIGINS = ['https://handwitten-predict-repo.onrender.com']
