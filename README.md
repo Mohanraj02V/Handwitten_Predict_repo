@@ -14,9 +14,9 @@
   # POST https://handwitten-predict-repo.onrender.com/api/register/
   Request Body (JSON):
    {
-      "username": "mohanraj",
-      "email": "mohanraj@gmail.com",
-      "password": "Mohan@10fatedestiny"
+      "username": "your name",
+      "email": "your id",
+      "password": "your pass"
    }
    
 4. # 2️⃣ Login to Get Authentication Token
@@ -24,9 +24,9 @@
     # POST https://handwitten-predict-repo.onrender.com/api/login/
     Request Body (JSON):
       {
-        "username": "mohanraj",  // required
-        "email": "mohanraj@gmail.com",  // optional
-        "password": "Mohan@10fatedestiny"  // required
+        "username": "your name",  // required
+        "email": "your id",  // optional
+        "password": "pass"  // required
      }
 Response:
   You'll receive an authentication token in the response. Copy it for use in the next steps.
